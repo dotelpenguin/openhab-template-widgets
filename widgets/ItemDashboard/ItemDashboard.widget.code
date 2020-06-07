@@ -1,0 +1,56 @@
+<!-- 
+Item Dashboard
+for openHAB
+Lucky Mallari 2018
+bug fixes Drew Baker 2020
+-->
+<style>
+	.itmDb_{{$id}} {
+			width: 100%;
+    	height: 100%;
+    	position: absolute;
+    	top: 0;
+    	left: 0;
+      overflow: hidden;
+	}
+	.itmDb_{{$id}} .panel {
+  	margin-bottom: 0;
+  	width: 100%;
+    height: 100%;
+  	background-color: {{config.itmdb_bodyBgColor}};
+  }
+  .itmDb_{{$id}} .panel > .panel-heading {
+  	color: {{config.itmdb_headerTextColor}};
+    background-color: {{config.itmdb_headerBgColor}};
+    border-color: {{config.itmdb_headerBgColor}};
+  	text-align: {{config.itmdb_headerAlignment}};
+  }
+  .itmDb_{{$id}} .panel > .panel-body {
+		color: {{config.itmdb_bodyTextColor}};
+    font-size: {{config.itmdb_bodyTextSize}};
+  }
+  .itmDb_{{$id}} .panel .row {
+  	padding: 0;
+  	text-align: {{config.itmdb_itemAlignment}};
+  }
+  .itmDb_{{$id}} h3 {
+  	font-size: {{config.itmdb_headerTextSize}};
+  }
+  
+</style>
+<div class="itmDb_{{$id}}">
+	<div class="panel" ng-init="actualStateMap=$eval(config.itmdb_stateMap)">
+	  <div class="panel-heading">
+	    <h3><span ng-if="config.itmdb_headerIcon" class="glyphicon {{config.itmdb_headerIcon}}"></span> {{ngModel.name}}</h3>
+	  </div>
+	  <div class="panel-body">
+	      <div class="row" ng-repeat="itemName in (config.itmdb_itemList).split(',') track by $index">
+	        <div class="col-xs-12" ng-model="actualItem=getItem(itemName)">
+            <span ng-if="config.itmdb_iconPosition=='right'">{{actualItem.label}}</span>
+	          <span class="glyphicon {{actualStateMap[actualItem.state].icon}}" ng-style="{ color: actualStateMap[actualItem.state] && actualStateMap[actualItem.state].color}"></span>
+            <span ng-if="config.itmdb_iconPosition=='left'">{{actualItem.label}}</span>
+	        </div>
+	      </div>
+	  </div>
+	</div>
+</div>

@@ -1,0 +1,96 @@
+{
+    "name": "Item Dashboard",
+    "author": "Lucky Mallari",
+    "description": "Displays a collection of items",
+    "settings": [
+        {
+            "type": "string",
+            "id": "itmdb_itemList",
+            "label": "Items",
+            "description": "Items separated by comma ( , )",
+            "default": "item1,item2,item3"
+        },
+        {
+            "type": "string",
+            "id": "itmdb_stateMap",
+            "label": "Item State Mapping",
+            "default": "{ \"OPEN\" : { color: \"red\", icon: \"glyphicon-ok-sign\" }, \"CLOSED\": { color: \"green\", icon: \"glyphicon-remove-sign\" }, \"ON\" : { color: \"red\", icon: \"glyphicon-ok-sign\" }, \"OFF\": { color: \"green\", icon: \"glyphicon-remove-sign\" } }",
+            "description": "Item State Value/Icon/Color Mapping"
+        },
+        {
+            "type": "color",
+            "id": "itmdb_headerBgColor",
+            "label": "Header Background Color",
+            "description": "Header background color.",
+            "default": "#337ab7"
+        },
+        {
+            "type": "color",
+            "id": "itmdb_headerTextColor",
+            "label": "Header Text Color",
+            "default": "#fff",
+            "description": "Header text color"
+        },
+        {
+            "type": "string",
+            "id": "itmdb_headerIcon",
+            "label": "Header Icon",
+            "description": "Header Icon (Bootstrap Glyphicon https://getbootstrap.com/docs/3.3/components/#glyphicons ) Leave blank for no icon",
+            "default": "glyphicon-heart-empty"
+        },
+        {
+            "type": "string",
+            "id": "itmdb_headerTextSize",
+            "label": "Header Text Font Size",
+            "description": "Header Size including Unit. Example (12px, 1em)",
+            "default": "1.17em"
+        },
+        {
+            "type": "choice",
+            "id": "itmdb_headerAlignment",
+            "label": "Header Alignment",
+            "default": "left",
+            "choices": "left,center,right",
+            "description": "Header Alignment"
+        },
+        {
+            "type": "color",
+            "id": "itmdb_bodyBgColor",
+            "label": "Body Background Color",
+            "default": "#fff",
+            "description": "Body Background Color"
+        },
+        {
+            "type": "color",
+            "id": "itmdb_bodyTextColor",
+            "label": "Body Text Color",
+            "default": "#000",
+            "description": "Body Text Color"
+        },
+        {
+            "type": "choice",
+            "id": "itmdb_iconPosition",
+            "label": "Item Icon Position",
+            "default": "left",
+            "choices": "left,right",
+            "description": "Icon Position (left or right of item name)"
+        },
+        {
+            "type": "string",
+            "id": "itmdb_bodyTextSize",
+            "label": "Body Text Font Size",
+            "description": "Font Size including Unit. Example (12px, 1em)",
+            "default": "1em"
+        },
+        {
+            "type": "choice",
+            "id": "itmdb_itemAlignment",
+            "label": "Item Alignment",
+            "default": "left",
+            "choices": "left,center,right",
+            "description": "Alignment of items inside body"
+        }
+    ],
+    "template": "<!-- \nItem Dashboard\nfor openHAB\nLucky Mallari 2018\n-->\n<style>\n\t.itmDb_{{$id}} {\n\t\t\twidth: 100%;\n    \theight: 100%;\n    \tposition: absolute;\n    \ttop: 0;\n    \tleft: 0;\n      overflow: hidden;\n\t}\n\t.itmDb_{{$id}} .panel {\n  \tmargin-bottom: 0;\n  \twidth: 100%;\n    height: 100%;\n  \tbackground-color: {{config.itmdb_bodyBgColor}};\n  }\n  .itmDb_{{$id}} .panel > .panel-heading {\n  \tcolor: {{config.itmdb_headerTextColor}};\n    background-color: {{config.itmdb_headerBgColor}};\n    border-color: {{config.itmdb_headerBgColor}};\n  \ttext-align: {{config.itmdb_headerAlignment}};\n  }\n  .itmDb_{{$id}} .panel > .panel-body {\n\t\tcolor: {{config.itmdb_bodyTextColor}};\n    font-size: {{config.itmdb_bodyTextSize}};\n  }\n  .itmDb_{{$id}} .panel .row {\n  \tpadding: 0;\n  \ttext-align: {{config.itmdb_itemAlignment}};\n  }\n  .itmDb_{{$id}} h3 {\n  \tfont-size: {{config.itmdb_headerTextSize}};\n  }\n  \n</style>\n<div class=\"itmDb_{{$id}}\">\n\t<div class=\"panel\" ng-init=\"actualStateMap=$eval(config.itmdb_stateMap)\">\n\t  <div class=\"panel-heading\">\n\t    <h3><span ng-if=\"config.itmdb_headerIcon\" class=\"glyphicon {{config.itmdb_headerIcon}}\"></span> {{ngModel.name}}</h3>\n\t  </div>\n\t  <div class=\"panel-body\">\n\t      <div class=\"row\" ng-repeat=\"itemName in (config.itmdb_itemList).split(',') track by $index\">\n\t        <div class=\"col-xs-12\" ng-model=\"actualItem=getItem(itemName)\">\n            <span ng-if=\"config.itmdb_iconPosition=='right'\">{{actualItem.label}}</span>\n\t          <span class=\"glyphicon {{actualStateMap[actualItem.state].icon}}\" ng-style=\"{ color: actualStateMap[actualItem.state] && actualStateMap[actualItem.state].color}\"></span>\n            <span ng-if=\"config.itmdb_iconPosition=='left'\">{{actualItem.label}}</span>\n\t        </div>\n\t      </div>\n\t  </div>\n\t</div>\n</div>",
+    "readme_url": "https://community.openhab.org/t/43084"
+}
